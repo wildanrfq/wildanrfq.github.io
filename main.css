@@ -7,6 +7,12 @@ body {
   animation: background 40s cubic-bezier(1,0,0,1) infinite;  
 }
 
+img {
+  display: block;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 @-webkit-keyframes background {
   0% { background-color: cornsilk }
@@ -38,10 +44,10 @@ body {
 
 #bottom {
   position: absolute;
-  bottom: 0;
+  bottom: 1;
   width: 100%;
   color: black;
-  padding: 5px 0;
+  padding: 0px 0;
   text-align: center;
   font-weight: 900;
   font-size: 120
