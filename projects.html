@@ -4,41 +4,39 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    <title>Home - blonde</title>
+    <title>Projects - blonde</title>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="blonde">
     <meta property="og:title" content="blonde">
     <meta property="og:description" content="My personal website.">
     <meta name="theme-color" content="#1f8b4c">
+    <script src="repos.js"></script>
     <body>
         <div>
             <h1 align="center">blonde</h1>
         </div>
         <div class="topnav" id="myTopnav">
-            <a href="/index.html" class="active">Home</a>
+            <a href="/index.html">Home</a>
             <a href="/about.html">About</a>
-            <a href="/projects.html">Projects</a>
+            <a href="/projects.html" class="active">Projects</a>
             <a target="_blank" href="https://github.com/danrfq/">GitHub</a>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                 <i class="fa fa-bars"></i>
             </a>
         </div>
-        <div>
-            <br></br>
-            <p align="center" style="font-size: 30px">Welcome to my website!</p>
-            <p align="center">I made this website just for learning purposes as I want to learn CSS, HTML and JavaScript (and others to come) along the way.</p>
-            <div id="bottom2">blonde</div>
-        </div>
+        <br>
     </body>
+    <script>
+        for (const repo of data) {
+            let box = document.createElement("div");
+            const br = document.createElement("br");
+            box.classList.add("box");
+            box.innerHTML = `<h3><a target="_blank" href="${repo.link}">${repo.repo} (${repo.language})</a></h3><p>${repo.description}</p>`;
+            box.style.cssText = "background: " + repo.languageColor;
+            document.body.appendChild(box);
+            document.body.appendChild(br);
+            document.body.appendChild(br);
 
-<script>
-function myFunction() {
-    let x = document.getElementById("myTopnav");
-    if (x.className === "topnav") {
-        x.className += " responsive";
-    } else {
-        x.className = "topnav";
-    }
-}
-</script>
+        }
+    </script>
 </html>
