@@ -1,8 +1,7 @@
 body {
+  margin: 0;
   height: 100%;
-}
-
-body {
+  font-family: Arial, Helvetica, sans-serif;
   -webkit-animation: background 40s cubic-bezier(1,0,0,1) infinite;
   animation: background 40s cubic-bezier(1,0,0,1) infinite;  
 }
