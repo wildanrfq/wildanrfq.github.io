@@ -102,6 +102,67 @@ function NowPlayingWidget({ visible }) {
   );
 }
 
+function useLastFilm() {
+  const [film, setFilm] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}last-film.json`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.title) setFilm(data);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  return { film, loading };
+}
+
+function LastFilmWidget({ visible }) {
+  const { film, loading } = useLastFilm();
+
+  if (!visible) return null;
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-3 font-mono text-sm text-[#a0aec0] animate-pulse">
+        <span>fetching letterboxd...</span>
+      </div>
+    );
+  }
+
+  if (!film) return null;
+
+  return (
+    <a
+      href={film.url ?? "https://letterboxd.com/wildanrfq"}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-3 no-underline group"
+    >
+      {film.poster && (
+        <img
+          src={film.poster}
+          alt={film.title}
+          className="w-10 h-10 rounded object-cover flex-shrink-0"
+        />
+      )}
+      <div className="flex flex-col">
+        <span className="font-mono text-xs text-[#a0aec0] uppercase tracking-wider">
+          last watched
+        </span>
+        <span className="font-mono text-sm text-white group-hover:text-[#63b3ed] transition-colors duration-200 leading-tight">
+          {film.title}
+          {film.rating && (
+            <span className="text-[#a0aec0] ml-1">{film.rating}/5</span>
+          )}
+        </span>
+      </div>
+    </a>
+  );
+}
+
 const projects = [
   {
     id: 1,
@@ -220,6 +281,7 @@ function HomePage() {
 
       <div className="relative py-4">
         <NowPlayingWidget visible={isTypingComplete} />
+        <LastFilmWidget visible={isTypingComplete} />
       </div>
 
       <div className="flex">
