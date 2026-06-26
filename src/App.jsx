@@ -87,10 +87,10 @@ function NowPlayingWidget({ visible }) {
           {isPlaying ? (
             <span className="flex items-center gap-1">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-[green] animate-pulse" />
-              i am now playing
+              currently listening to
             </span>
           ) : (
-            "i was listening to"
+            "last listened to"
           )}
         </span>
         <span className="font-mono text-sm text-white group-hover:text-[#63b3ed] transition-colors duration-200 leading-tight">
@@ -169,10 +169,14 @@ function HomePage() {
   const [isTypingComplete, setTypingComplete] = useState(false);
 
   const textLines = [
-    "Passionate about competitive programming, software engineering, and web development,",
-    "with a strong desire to continuously expand my knowledge.",
-    "Proficient in Python, JavaScript, Ruby, and a little bit of Rust and C++.",
-    "Eager to collaborate on innovative projects that emphasize teamwork and creativity!",
+    'Informatics student at UPN "Veteran" Yogyakarta.',
+    "I build things for mobile and web, teach programming practicum",
+    "to ~100+ students, and occasionally compete in",
+    "competitive programming (achieved 2nd place, not bad 😁).",
+    "Currently working on Spader, an iOS schedule management app",
+    "for college students, built with Swift.",
+    "Proficient in Python, JavaScript, and Ruby.",
+    "Getting comfortable with Rust and C++.",
   ];
 
   useEffect(() => {
