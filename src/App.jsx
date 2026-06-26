@@ -105,6 +105,14 @@ function NowPlayingWidget({ visible }) {
 const projects = [
   {
     id: 1,
+    name: "wildanrfq.github.io",
+    description:
+      "The website you're seeing right now. My personal portfolio website built with React, Vite, and Tailwind CSS. Features a typing animation, live Last.fm now playing widget, and a projects page.",
+    repo: "https://github.com/wildanrfq/wildanrfq.github.io",
+    lang: "React",
+  },
+  {
+    id: 1,
     name: "spader",
     description:
       'An iOS app for managing lecture schedules, assignments, and academic notes, built with SwiftUI for UPN "Veteran" Yogyakarta students. Features auto-import from SIAKAD format, task management with deadline reminders, a GPA tracker with semester charts, a home screen WidgetKit widget, and bilingual (Indonesian/English) support.',
@@ -134,7 +142,7 @@ const projects = [
       "A web-based heritage tourism platform for exploring historical sites in Yogyakarta. Features an interactive map, event calendar, trip planner, photo galleries, and an admin panel for managing places and events.",
     repo: "https://github.com/wildanrfq/jogja-historia",
     lang: "PHP",
-  }
+  },
 ];
 
 function Navbar() {
