@@ -112,7 +112,7 @@ const projects = [
     lang: "React",
   },
   {
-    id: 1,
+    id: 2,
     name: "spader",
     description:
       'An iOS app for managing lecture schedules, assignments, and academic notes, built with SwiftUI for UPN "Veteran" Yogyakarta students. Features auto-import from SIAKAD format, task management with deadline reminders, a GPA tracker with semester charts, a home screen WidgetKit widget, and bilingual (Indonesian/English) support.',
@@ -120,7 +120,7 @@ const projects = [
     lang: "Swift",
   },
   {
-    id: 2,
+    id: 3,
     name: "filmbro",
     description:
       "A Discord bot about films and movies, written in Rust. Integrates with the TMDB API and supports Letterboxd-related features, letting users look up film info and interact with movie data directly from a Discord server.",
@@ -128,7 +128,7 @@ const projects = [
     lang: "Rust",
   },
   {
-    id: 3,
+    id: 4,
     name: "spada-reminder",
     description:
       'A Telegram bot that sends automated attendance reminders for UPN "Veteran" Yogyakarta\'s e-learning platform (SPADA). The bot runs on a weekly schedule, firing daily notifications before each class session with a direct inline button linking to the SPADA attendance page. Each reminder includes the current course name, attendance window, and a heads-up for the next upcoming class. Built with python-telegram-bot and APScheduler, with data persisted in a local SQLite database.',
@@ -136,7 +136,7 @@ const projects = [
     lang: "Python",
   },
   {
-    id: 4,
+    id: 5,
     name: "jogja-historia",
     description:
       "A web-based heritage tourism platform for exploring historical sites in Yogyakarta. Features an interactive map, event calendar, trip planner, photo galleries, and an admin panel for managing places and events.",
