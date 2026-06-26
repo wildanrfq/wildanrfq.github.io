@@ -69,36 +69,52 @@ function NowPlayingWidget({ visible }) {
   if (!track) return null;
 
   return (
-    <a
-      href={track.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center gap-3 no-underline group"
-    >
+    <div className="flex items-center gap-3 mb-3">
       {track.image && (
-        <img
-          src={track.image}
-          alt={track.album}
-          className="w-10 h-10 rounded object-cover flex-shrink-0"
-        />
+        <a
+          href={track.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-shrink-0"
+        >
+          <img
+            src={track.image}
+            alt={track.album}
+            className="w-10 h-10 rounded object-cover"
+          />
+        </a>
       )}
       <div className="flex flex-col">
-        <span className="font-mono text-xs text-[#a0aec0] uppercase tracking-wider">
+        <a
+          href="https://last.fm/user/wildanrfq"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-mono text-xs text-[#a0aec0] hover:text-[#63b3ed] uppercase tracking-wider no-underline transition-colors duration-200"
+        >
           {isPlaying ? (
             <span className="flex items-center gap-1">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-[green] animate-pulse" />
-              currently listening to
+              currently listening to:
             </span>
           ) : (
-            "last listened to"
+            "last listened to:"
           )}
-        </span>
-        <span className="font-mono text-sm text-white group-hover:text-[#63b3ed] transition-colors duration-200 leading-tight">
-          {track.name} <span className="text-[#a0aec0]">by</span>{" "}
-          <span className="text-[#90cdf4]">{track.artist}</span>
+        </a>
+
+        <span className="font-mono text-sm text-white leading-tight">
+          <a
+            href={track.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-[#63b3ed] no-underline transition-colors duration-200"
+          >
+            {track.name}
+          </a>{" "}
+          <span className="text-[#a0aec0] cursor-default">by</span>{" "}
+          <span className="text-[#90cdf4] cursor-default">{track.artist}</span>
         </span>
       </div>
-    </a>
+    </div>
   );
 }
 
@@ -135,31 +151,50 @@ function LastFilmWidget({ visible }) {
   if (!film) return null;
 
   return (
-    <a
-      href={film.url ?? "https://letterboxd.com/wildanrfq"}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center gap-3 no-underline group"
-    >
+    <div className="flex items-center gap-3">
       {film.poster && (
-        <img
-          src={film.poster}
-          alt={film.title}
-          className="w-10 h-10 rounded object-cover flex-shrink-0"
-        />
+        <a
+          href={film.url ?? "https://letterboxd.com/wildanrfq"}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-shrink-0"
+        >
+          <img
+            src={film.poster}
+            alt={film.title}
+            className="w-10 h-10 rounded object-cover"
+          />
+        </a>
       )}
       <div className="flex flex-col">
-        <span className="font-mono text-xs text-[#a0aec0] uppercase tracking-wider">
-          last watched
-        </span>
-        <span className="font-mono text-sm text-white group-hover:text-[#63b3ed] transition-colors duration-200 leading-tight">
-          {film.title}
+        <a
+          href="https://letterboxd.com/wildanrfq"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-mono text-xs text-[#a0aec0] hover:text-[#63b3ed] uppercase tracking-wider no-underline transition-colors duration-200"
+        >
+          last watched:
+        </a>
+
+
+        <div className="font-mono text-sm leading-tight text-white flex items-center">
+          <a
+            href={film.url ?? "https://letterboxd.com/wildanrfq"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-[#63b3ed] transition-colors duration-200 no-underline"
+          >
+            {film.title}
+          </a>
+
           {film.rating && (
-            <span className="text-[#a0aec0] ml-1">{film.rating}/5</span>
+            <span className="text-[#a0aec0] cursor-default ml-1">
+              - {film.rating}/5 ⭐️
+            </span>
           )}
-        </span>
+        </div>
       </div>
-    </a>
+    </div>
   );
 }
 
