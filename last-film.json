@@ -1,7 +1,14 @@
 {
-  "title": "Obsession (2025)",
-  "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/3/4/4/7/2/1234472-obsession-2025-2-0-150-0-225-crop.jpg?v=cff6fc00b6",
-  "rating": 4.5,
-  "url": "https://letterboxd.com/wildanrfq/film/obsession-2025/",
-  "fetchedAt": "2026-06-26T18:13:01.532Z"
+  "title": "Faces of Death (2026)",
+<<<<<<< HEAD
+  "poster": "https://s.ltrbxd.com/static/img/empty-poster-150-DtnLDE3k.png",
+  "rating": 4,
+  "url": "https://letterboxd.com/wildanrfq/film/faces-of-death-2026/",
+  "fetchedAt": "2026-07-01T03:56:17.658Z"
+=======
+  "poster": "https://a.ltrbxd.com/resized/film-poster/7/6/9/8/6/4/769864-faces-of-death-2026-0-150-0-225-crop.jpg?v=71c7b8d032",
+  "rating": 4,
+  "url": "https://letterboxd.com/wildanrfq/film/faces-of-death-2026/",
+  "fetchedAt": "2026-07-01T14:05:52.682Z"
+>>>>>>> 029f80d (fix: empty letterboxd last film poster)
 }
