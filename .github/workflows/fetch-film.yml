@@ -32,3 +32,13 @@ jobs:
                   git add public/last-film.json
                   git diff --staged --quiet || git commit -m "chore: update last-film.json"
                   git push
+
+            - name: Build site
+              run: npm run build
+
+            - name: Deploy dist to gh-pages
+              uses: peaceiris/actions-gh-pages@v4
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./dist
+                  force_orphan: true

@@ -258,24 +258,34 @@ function Navbar() {
   );
 }
 
+const textLines = [
+  'Informatics student at UPN "Veteran" Yogyakarta.',
+  "I build things for mobile and web, teach programming practicum",
+  "to ~100+ students, and occasionally compete in",
+  "competitive programming (achieved 2nd place, not bad 😁).",
+  "Currently working on Spader, an iOS schedule management app",
+  "for college students, built with Swift.",
+  "Proficient in Python, JavaScript, and Ruby.",
+  "Getting comfortable with Rust and C++.",
+];
+
+const fullIntroText = textLines.join("\n");
+
+// Module scoped so it survives HomePage unmount/remount when the user
+// navigates to /projects and back. Only resets on a full page reload.
+let hasPlayedIntro = false;
+
 function HomePage() {
   const [index, setIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
-  const [showText, setShowText] = useState("");
-  const [isTypingComplete, setTypingComplete] = useState(false);
-
-  const textLines = [
-    'Informatics student at UPN "Veteran" Yogyakarta.',
-    "I build things for mobile and web, teach programming practicum",
-    "to ~100+ students, and occasionally compete in",
-    "competitive programming (achieved 2nd place, not bad 😁).",
-    "Currently working on Spader, an iOS schedule management app",
-    "for college students, built with Swift.",
-    "Proficient in Python, JavaScript, and Ruby.",
-    "Getting comfortable with Rust and C++.",
-  ];
+  const [showText, setShowText] = useState(
+    hasPlayedIntro ? fullIntroText : ""
+  );
+  const [isTypingComplete, setTypingComplete] = useState(hasPlayedIntro);
 
   useEffect(() => {
+    if (hasPlayedIntro) return;
+
     if (index < textLines.length) {
       const currentLine = textLines[index];
       if (charIndex < currentLine.length) {
@@ -292,6 +302,7 @@ function HomePage() {
         }, 500);
       }
     } else {
+      hasPlayedIntro = true;
       setTypingComplete(true);
     }
   }, [index, charIndex]);
