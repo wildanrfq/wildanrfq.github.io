@@ -271,13 +271,27 @@ const textLines = [
 
 const fullIntroText = textLines.join("\n");
 
-// Module scoped so it survives HomePage unmount/remount when the user
-// navigates to /projects and back. Only resets on a full page reload.
+function buildRevealSchedule(lines) {
+  const offsets = [];
+  let t = 0;
+  lines.forEach((line, li) => {
+    for (let i = 0; i < line.length; i++) {
+      t += 50;
+      offsets.push(t);
+    }
+    if (li < lines.length - 1) {
+      t += 500;
+      offsets.push(t);
+    }
+  });
+  return { offsets, duration: t };
+}
+
+const introSchedule = buildRevealSchedule(textLines);
 let hasPlayedIntro = false;
+let introStartTime = null;
 
 function HomePage() {
-  const [index, setIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
   const [showText, setShowText] = useState(
     hasPlayedIntro ? fullIntroText : ""
   );
@@ -285,27 +299,32 @@ function HomePage() {
 
   useEffect(() => {
     if (hasPlayedIntro) return;
+    if (introStartTime === null) introStartTime = Date.now();
 
-    if (index < textLines.length) {
-      const currentLine = textLines[index];
-      if (charIndex < currentLine.length) {
-        const interval = setInterval(() => {
-          setShowText((prev) => prev + currentLine[charIndex]);
-          setCharIndex(charIndex + 1);
-        }, 50);
-        return () => clearInterval(interval);
-      } else {
-        setTimeout(() => {
-          setIndex(index + 1);
-          setCharIndex(0);
-          setShowText((prev) => prev + "\n");
-        }, 500);
+    let timeoutId;
+    let revealed = 0;
+
+    const tick = () => {
+      const elapsed = Date.now() - introStartTime;
+      while (
+        revealed < introSchedule.offsets.length &&
+        introSchedule.offsets[revealed] <= elapsed
+      ) {
+        revealed++;
       }
-    } else {
-      hasPlayedIntro = true;
-      setTypingComplete(true);
-    }
-  }, [index, charIndex]);
+      setShowText(fullIntroText.slice(0, revealed));
+
+      if (elapsed >= introSchedule.duration) {
+        hasPlayedIntro = true;
+        setTypingComplete(true);
+        return;
+      }
+      timeoutId = setTimeout(tick, 50);
+    };
+
+    tick();
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   return (
     <div className="bg-[#22303c] min-h-screen flex flex-col justify-between items-center text-white relative">
