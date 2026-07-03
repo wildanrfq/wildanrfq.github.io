@@ -11,59 +11,54 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Deploy to GitHub Pages: `npm run deploy` (requires `gh-pages` setup; see DEPLOY.md for details)
 - Run a single test: There are no tests configured in this project.
 
+## Environment Variables
+
+Copy `.env.example` to `.env` and fill in the values before running locally.
+
+- `VITE_LASTFM_API_KEY` / `VITE_LASTFM_USER`: powers the now playing widget on the home page.
+- `VITE_CONTACT_FORM_ENDPOINT`: optional Formspree (or similar) endpoint for the contact page. Falls back to a mailto link when empty.
+- `VITE_UMAMI_WEBSITE_ID` / `VITE_UMAMI_SCRIPT_URL`: optional, enables lightweight Umami analytics. Analytics is skipped entirely when the website id is empty.
+
+`.env` is gitignored, never commit real keys.
+
 ## Code Architecture & Structure
 
 ### Overview
-This is a single-page application (SPA) built with React, Vite, and TailwindCSS. It serves as a personal portfolio with two main views: Home and Projects.
+React, Vite, and Tailwind CSS single-page application with five routes: home, about, projects, a project detail page, and contact.
 
 ### Directory Structure
-- `src/` - Contains all source code
-  - `assets/` - Static images (GitHub, Discord, Instagram icons, hero image, etc.)
-  - `index.css` - Global CSS (Tailwind base styles)
-  - `main.jsx` - Entry point; renders `<App />` into DOM
-  - `App.jsx` - Main application component containing:
-    - Routing (via `react-router-dom`) with two routes:
-      - `/` → `HomePage`
-      - `/projects` → `ProjectsPage`
-    - `Navbar` component for navigation between pages
-    - `NowPlayingWidget` that fetches recently played track from Last.fm API
-    - Hardcoded `projects` array displayed in `ProjectsPage`
-  - `HomePage.jsx` (within App.jsx) - Features typewriter animation for bio text, social media links, and Last.fm widget
-  - `ProjectsPage.jsx` (within App.jsx) - Lists projects with descriptions, technologies, and links to repositories
-
-### Styling
-- Tailwind CSS configured via `tailwind.config.js` and `postcss.config.js`
-- Utility-first styling; no custom CSS files beyond base Tailwind
-- Responsive design using Tailwind's responsive prefixes (sm, md, lg, etc.)
+- `src/App.jsx` - Routing only.
+- `src/main.jsx` - Entry point, also kicks off analytics.
+- `src/config/site.js` - Site-wide constants: name, email, social links, Last.fm config. Nothing sensitive is hardcoded here, the API key is read from env.
+- `src/data/` - Static content as plain data: `projects.js`, `experience.js`, `achievements.js`. Edit these files to update site content without touching components.
+- `src/lib/` - Hooks and utilities: `useNowPlaying.js`, `useLastFilm.js`, `analytics.js`.
+- `src/components/` - Shared UI: `Navbar`, `Footer`, `SocialLinks`, `NowPlayingWidget`, `LastFilmWidget`, `WidgetSkeleton`, `DownloadCvButton`.
+- `src/pages/` - One file per route: `HomePage`, `AboutPage`, `ProjectsPage`, `ProjectDetailPage`, `ContactPage`.
 
 ### Routing
-- Client-side routing using `react-router-dom`
-- Base URL configured in `vite.config.js` (set to `'/'` for root domain)
-- Note for GitHub Pages deployment: See `DEPLOY.md` for 404 handling solution
+- Client-side routing using `react-router-dom`.
+- Base URL configured in `vite.config.js` (set to `'/'` for root domain).
+- Note for GitHub Pages deployment: See `DEPLOY.md` for 404 handling solution.
+- Project detail pages live at `/projects/:slug`, slug comes from `src/data/projects.js`.
 
 ### Key Features
-- **Last.fm Integration**: Uses `useNowPlaying` hook in `App.jsx` to fetch user's currently/scrobbling track from Last.fm API (polling every 30 seconds)
-- **Typewriter Effect**: Animated text reveal in `HomePage` using `useEffect` and state updates
-- **Project Showcase**: Static array of project objects in `App.jsx` mapped to cards in `ProjectsPage`
-- **Social Media Links**: Icons linking to GitHub, Discord, Instagram profiles
+- Last.fm now playing widget with skeleton loading state, polls every 30s.
+- Automated Letterboxd last watched film widget, populated by `scripts/fetch-last-film.js` via GitHub Actions.
+- Typewriter intro animation on the home page.
+- About page with experience timeline, skills, achievements, and a CV download button (points to `public/cv.pdf`, add your own file there).
+- Contact page with a form (posts to `VITE_CONTACT_FORM_ENDPOINT` if set, otherwise falls back to mailto).
+- Project detail pages with stack and feature lists.
+- SEO: meta description, Open Graph and Twitter card tags in `index.html`, plus `public/robots.txt` and `public/sitemap.xml`.
+- Optional Umami analytics, loaded conditionally from `src/lib/analytics.js`.
 
-### Environment Variables
-- None currently; Last.fm API key and username are hardcoded in `App.jsx` (lines 13-15). For security, consider moving to environment variables in future.
+### Adding a CV
+Drop a `cv.pdf` file into `public/`. The Download CV button on the About page links to `/cv.pdf`.
 
 ### Deployment
-- Configured for GitHub Pages via `gh-pages` branch (see `DEPLOY.md`)
-- Build output goes to `dist/` directory
-- Deployment script: `npm run deploy` (runs `predeploy` build then pushes `dist/` to `gh-pages` branch)
-- For manual deployment, see DEPLOY.md instructions
+- Configured for GitHub Pages via `gh-pages` branch (see `DEPLOY.md`).
+- Build output goes to `dist/` directory.
+- Deployment script: `npm run deploy` (runs `predeploy` build then pushes `dist/` to `gh-pages` branch).
 
 ### Dependencies
-- Core: react, react-dom, react-router-dom
-- Dev: vite, @vitejs/plugin-react, tailwindcss, autoprefixer, postcss, gh-pages (for deployment)
-
-### Getting Started
-1. Clone repository
-2. Run `npm install`
-3. Run `npm run dev` to start development server
-4. Make changes to source files in `src/`
-5. Use `npm run build` for production build
-6. Deploy with `npm run deploy` (after setting up gh-pages)
+- Core: react, react-dom, react-router-dom.
+- Dev: vite, @vitejs/plugin-react, tailwindcss, autoprefixer, postcss, gh-pages.
