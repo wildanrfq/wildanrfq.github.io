@@ -1,10 +1,30 @@
 import { chromium } from "playwright";
-import { writeFileSync } from "fs";
+import { writeFileSync, readFileSync, existsSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PROFILE_URL = "https://letterboxd.com/wildanrfq";
+const OUT_PATH = resolve(__dirname, "../public/last-film.json");
+
+function readExisting() {
+  if (!existsSync(OUT_PATH)) return null;
+  try {
+    return JSON.parse(readFileSync(OUT_PATH, "utf-8"));
+  } catch {
+    return null;
+  }
+}
+
+function sameFilm(a, b) {
+  if (!a || !b) return false;
+  return (
+    a.title === b.title &&
+    a.poster === b.poster &&
+    a.rating === b.rating &&
+    a.url === b.url
+  );
+}
 
 async function scrapeOnce(browser) {
   const context = await browser.newContext({
@@ -109,8 +129,13 @@ async function fetchLastFilm() {
     return;
   }
 
-  const outPath = resolve(__dirname, "../public/last-film.json");
-  writeFileSync(outPath, JSON.stringify(film, null, 2));
+  const existing = readExisting();
+  if (sameFilm(existing, film)) {
+    console.log("last film unchanged, leaving last-film.json untouched");
+    return;
+  }
+
+  writeFileSync(OUT_PATH, JSON.stringify(film, null, 2));
   console.log("written:", film);
 }
 
