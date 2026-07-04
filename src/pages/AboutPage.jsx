@@ -9,10 +9,10 @@ export function AboutPage() {
     <div className="bg-[#22303c] min-h-screen text-white relative flex flex-col">
       <Navbar />
 
-      <div className="pt-24 pb-10 px-5 flex flex-col items-center flex-grow">
+      <div className="pt-28 sm:pt-24 pb-10 px-4 sm:px-5 flex flex-col items-center flex-grow">
         <div className="w-full max-w-2xl">
           <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
-            <h1 className="font-mono text-4xl m-0">about</h1>
+            <h1 className="font-mono text-3xl sm:text-4xl m-0">about</h1>
             <DownloadCvButton />
           </div>
 
@@ -68,9 +68,17 @@ export function AboutPage() {
           </section>
 
           <section className="mb-4">
-            <h2 className="font-mono text-[#63b3ed] text-xl mb-4">
-              achievements <a href="https://drive.google.com/drive/folders/1gBk4TYgLY8XjEH2AfObqTyBsCVjmtCaG?usp=sharing">[click here to see certificates]</a>
+            <h2 className="font-mono text-[#63b3ed] text-lg sm:text-xl mb-1">
+              achievements
             </h2>
+            <a
+              href="https://drive.google.com/drive/folders/1gBk4TYgLY8XjEH2AfObqTyBsCVjmtCaG?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-xs sm:text-sm text-[#a0aec0] hover:text-[#63b3ed] no-underline block mb-4"
+            >
+              click here to see certificates
+            </a>
             <div className="flex flex-col gap-3">
               {achievements.map((item) => (
                 <div

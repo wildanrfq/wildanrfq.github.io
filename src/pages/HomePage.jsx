@@ -81,7 +81,7 @@ export function HomePage() {
         <p className="font-mono text-2xl sm:text-4xl mb-2 text-center">
           Wildan Rifqi
         </p>
-        <div className="font-mono text-sm sm:text-lg md:text-xl text-white relative flex-grow w-full max-w-xl">
+        <div className="font-mono text-sm sm:text-lg md:text-xl text-white relative w-full max-w-xl">
           <div className="whitespace-pre-wrap font-mono leading-relaxed">
             {showText}
             {!isTypingComplete && (
