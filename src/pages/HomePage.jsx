@@ -77,10 +77,12 @@ export function HomePage() {
     <div className="bg-[#22303c] min-h-screen flex flex-col justify-between items-center text-white relative">
       <Navbar />
 
-      <div className="flex flex-col items-center justify-center flex-grow">
-        <p className="font-mono text-4xl mt-48 mb-2">Wildan Rifqi</p>
-        <div className="font-mono text-xl text-white relative flex-grow">
-          <div className="whitespace-pre-wrap font-mono">
+      <div className="flex flex-col items-center justify-center flex-grow px-4 sm:px-6 pt-28 sm:pt-0">
+        <p className="font-mono text-2xl sm:text-4xl mb-2 text-center">
+          Wildan Rifqi
+        </p>
+        <div className="font-mono text-sm sm:text-lg md:text-xl text-white relative flex-grow w-full max-w-xl">
+          <div className="whitespace-pre-wrap font-mono leading-relaxed">
             {showText}
             {!isTypingComplete && (
               <span className="inline-block w-px bg-transparent animate-[blink_1s_step-end_infinite]">
@@ -91,7 +93,7 @@ export function HomePage() {
         </div>
       </div>
 
-      <div className="relative py-4">
+      <div className="relative py-4 px-4 w-full max-w-xl">
         <NowPlayingWidget visible={isTypingComplete} />
         <LastFilmWidget visible={isTypingComplete} />
       </div>
