@@ -1,5 +1,6 @@
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
+import { SocialLinks } from "../components/SocialLinks";
 import { DownloadCvButton } from "../components/DownloadCvButton";
 import { experience, skills } from "../data/experience";
 import { achievements } from "../data/achievements";
@@ -9,7 +10,7 @@ export function AboutPage() {
     <div className="bg-[#22303c] min-h-screen text-white relative flex flex-col">
       <Navbar />
 
-      <div className="pt-28 sm:pt-24 pb-10 px-4 sm:px-5 flex flex-col items-center flex-grow">
+      <div className="pt-28 sm:pt-24 pb-2 px-4 sm:px-5 flex flex-col items-center flex-grow">
         <div className="w-full max-w-2xl">
           <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
             <h1 className="font-mono text-3xl sm:text-4xl m-0">about</h1>
@@ -100,6 +101,10 @@ export function AboutPage() {
               ))}
             </div>
           </section>
+
+          <div className="flex justify-center">
+            <SocialLinks />
+          </div>
         </div>
       </div>
 

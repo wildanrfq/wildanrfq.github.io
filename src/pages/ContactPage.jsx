@@ -39,13 +39,13 @@ export function ContactPage() {
   };
 
   return (
-    <div className="bg-[#22303c] min-h-screen text-white relative flex flex-col">
+    <div className="bg-[#22303c] min-h-dvh text-white relative flex flex-col">
       <Navbar />
 
-      <div className="pt-24 pb-10 px-5 flex flex-col items-center flex-grow">
-        <div className="w-full max-w-xl">
+      <div className="pt-20 sm:pt-24 pb-2 px-5 flex flex-col items-center flex-grow">
+        <div className="w-full max-w-xl flex flex-col flex-grow">
           <h1 className="font-mono text-4xl mb-3">contact</h1>
-          <p className="text-[#a0aec0] leading-relaxed mb-8">
+          <p className="text-[#a0aec0] leading-relaxed mb-6">
             Got a project in mind or just want to say hi? Send a message
             below, or reach out directly at{" "}
             <a href={`mailto:${SITE.email}`} className="text-[#63b3ed]">
@@ -126,7 +126,7 @@ export function ContactPage() {
             )}
           </form>
 
-          <div className="mt-8 flex justify-center">
+          <div className="mt-auto pt-6 flex justify-center">
             <SocialLinks />
           </div>
         </div>

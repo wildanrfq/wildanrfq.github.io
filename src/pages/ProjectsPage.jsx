@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
+import { SocialLinks } from "../components/SocialLinks";
 import { projects } from "../data/projects";
 
 export function ProjectsPage() {
@@ -8,7 +9,7 @@ export function ProjectsPage() {
     <div className="bg-[#22303c] min-h-screen text-white relative flex flex-col">
       <Navbar />
 
-      <div className="pt-28 sm:pt-24 pb-10 px-4 sm:px-5 flex flex-col items-center flex-grow">
+      <div className="pt-28 sm:pt-24 pb-2 px-4 sm:px-5 flex flex-col items-center flex-grow">
         <h1 className="font-mono text-3xl sm:text-4xl mb-10 text-white">projects</h1>
 
         <div className="flex flex-col items-center w-full max-w-2xl gap-5">
@@ -31,6 +32,10 @@ export function ProjectsPage() {
               </p>
             </Link>
           ))}
+        </div>
+
+        <div className="mt-10 flex justify-center">
+          <SocialLinks />
         </div>
       </div>
 

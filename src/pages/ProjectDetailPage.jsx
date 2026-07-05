@@ -1,6 +1,7 @@
 import { Link, useParams, Navigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
+import { SocialLinks } from "../components/SocialLinks";
 import { getProjectBySlug } from "../data/projects";
 
 export function ProjectDetailPage() {
@@ -15,7 +16,7 @@ export function ProjectDetailPage() {
     <div className="bg-[#22303c] min-h-screen text-white relative flex flex-col">
       <Navbar />
 
-      <div className="pt-24 pb-10 px-5 flex flex-col items-center flex-grow">
+      <div className="pt-24 pb-2 px-5 flex flex-col items-center flex-grow">
         <div className="w-full max-w-2xl">
           <Link
             to="/projects"
@@ -72,6 +73,10 @@ export function ProjectDetailPage() {
           >
             View on GitHub
           </a>
+
+          <div className="mt-8 flex justify-center">
+            <SocialLinks />
+          </div>
         </div>
       </div>
 

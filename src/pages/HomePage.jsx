@@ -39,9 +39,7 @@ let hasPlayedIntro = false;
 let introStartTime = null;
 
 export function HomePage() {
-  const [showText, setShowText] = useState(
-    hasPlayedIntro ? fullIntroText : ""
-  );
+  const [showText, setShowText] = useState(hasPlayedIntro ? fullIntroText : "");
   const [isTypingComplete, setTypingComplete] = useState(hasPlayedIntro);
 
   useEffect(() => {
@@ -74,15 +72,21 @@ export function HomePage() {
   }, []);
 
   return (
-    <div className="bg-[#22303c] min-h-screen flex flex-col justify-between items-center text-white relative">
+    <div className="bg-[#22303c] min-h-screen flex flex-col text-white relative">
       <Navbar />
 
-      <div className="flex flex-col items-center justify-center flex-grow px-4 sm:px-6 pt-28 sm:pt-0">
-        <p className="font-mono text-2xl sm:text-4xl mb-2 text-center">
+      <div className="flex-grow flex flex-col items-center justify-center w-full px-4 sm:px-6 pt-28 sm:pt-16 -translate-y-10">
+        <p className="font-mono text-2xl sm:text-4xl mb-6 sm:mb-8 text-center">
           Wildan Rifqi
         </p>
-        <div className="font-mono text-sm sm:text-lg md:text-xl text-white relative w-full max-w-xl">
-          <div className="whitespace-pre-wrap font-mono leading-relaxed">
+        <div className="font-mono text-sm sm:text-lg md:text-xl text-white relative w-full max-w-xl md:max-w-2xl lg:max-w-3xl">
+          <div
+            className="whitespace-pre-wrap font-mono leading-relaxed invisible"
+            aria-hidden="true"
+          >
+            {fullIntroText}
+          </div>
+          <div className="absolute inset-0 whitespace-pre-wrap font-mono leading-relaxed">
             {showText}
             {!isTypingComplete && (
               <span className="inline-block w-px bg-transparent animate-[blink_1s_step-end_infinite]">
@@ -93,9 +97,14 @@ export function HomePage() {
         </div>
       </div>
 
-      <div className="relative py-4 px-4 w-full max-w-xl">
-        <NowPlayingWidget visible={isTypingComplete} />
-        <LastFilmWidget visible={isTypingComplete} />
+      <div className="flex flex-col items-center w-full px-4 pb-6">
+        <div className="inline-flex flex-col items-stretch gap-2">
+          <NowPlayingWidget visible={isTypingComplete} />
+          <LastFilmWidget visible={isTypingComplete} />
+        </div>
+        <div className="mt-4 flex justify-center">
+          <SocialLinks />
+        </div>
       </div>
 
       <Footer />
