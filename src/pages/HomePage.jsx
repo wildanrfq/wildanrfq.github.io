@@ -4,6 +4,7 @@ import { Footer } from "../components/Footer";
 import { SocialLinks } from "../components/SocialLinks";
 import { NowPlayingWidget } from "../components/NowPlayingWidget";
 import { LastFilmWidget } from "../components/LastFilmWidget";
+import { FastForwardIcon } from "../components/icons";
 
 const textLines = [
   'Informatics student at UPN "Veteran" Yogyakarta.',
@@ -43,13 +44,15 @@ export function HomePage() {
   const [isTypingComplete, setTypingComplete] = useState(hasPlayedIntro);
 
   useEffect(() => {
-    if (hasPlayedIntro) return;
+    if (isTypingComplete) return;
     if (introStartTime === null) introStartTime = Date.now();
 
     let timeoutId;
     let revealed = 0;
 
     const tick = () => {
+      if (hasPlayedIntro) return;
+
       const elapsed = Date.now() - introStartTime;
       while (
         revealed < introSchedule.offsets.length &&
@@ -69,7 +72,13 @@ export function HomePage() {
 
     tick();
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [isTypingComplete]);
+
+  const skipIntro = () => {
+    hasPlayedIntro = true;
+    setTypingComplete(true);
+    setShowText(fullIntroText);
+  };
 
   return (
     <div className="bg-[#22303c] min-h-screen flex flex-col text-white relative">
@@ -94,10 +103,25 @@ export function HomePage() {
               </span>
             )}
           </div>
+
+          <button
+            onClick={skipIntro}
+            className={`absolute -bottom-14 right-0 flex items-center justify-center p-2 rounded-full bg-[#2d3748]/80 hover:bg-[#4a5568]/95 border border-gray-600/30 text-[#a0aec0] hover:text-white shadow-lg group focus:outline-none transition-all duration-500 ${
+              isTypingComplete
+                ? "opacity-0 scale-95 pointer-events-none"
+                : "opacity-100 scale-100"
+            }`}
+            aria-label="Skip typing animation"
+          >
+            <FastForwardIcon className="w-5 h-5" />
+            <span className="absolute bottom-full mb-2 right-1/2 translate-x-1/2 px-2.5 py-1.5 rounded-lg bg-[#1a202c] text-xs font-mono text-white whitespace-nowrap shadow-xl border border-gray-700/50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              Skip Animation
+            </span>
+          </button>
         </div>
       </div>
 
-      <div className="flex flex-col items-center w-full px-4 pb-6">
+      <div className="flex flex-col items-center w-full px-4 pb-2">
         <div className="inline-flex flex-col items-stretch gap-2">
           <NowPlayingWidget visible={isTypingComplete} />
           <LastFilmWidget visible={isTypingComplete} />

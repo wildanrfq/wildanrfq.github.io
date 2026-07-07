@@ -1,32 +1,44 @@
-import github from "../assets/github.png";
-import discord from "../assets/discord.png";
-import instagram from "../assets/instagram.png";
-import { LinkedInIcon } from "./icons";
+import { GitHubIcon, LinkedInIcon, DiscordIcon, InstagramIcon } from "./icons";
 import { SOCIAL_LINKS } from "../config/site";
 
 export function SocialLinks() {
+  const iconClass = "w-9 h-9 text-[#a0aec0] hover:text-[#63b3ed] transition-colors duration-200";
+
   return (
-    <div className="flex items-center">
-      <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">
-        <img src={github} alt="GitHub" className="w-[50px] m-[10px] invert" />
+    <div className="flex items-center gap-5 py-2">
+      <a
+        href={SOCIAL_LINKS.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub"
+      >
+        <GitHubIcon className={iconClass} />
       </a>
-      <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">
-        <LinkedInIcon className="w-[38px] h-[38px] m-[16px] text-white" />
+      <a
+        href={SOCIAL_LINKS.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+      >
+        <LinkedInIcon className={iconClass} />
       </a>
-      <a href={SOCIAL_LINKS.discord} target="_blank" rel="noopener noreferrer">
-        <img src={discord} alt="Discord" className="w-[50px] m-[10px] invert" />
+      <a
+        href={SOCIAL_LINKS.discord}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Discord"
+      >
+        <DiscordIcon className={iconClass} />
       </a>
       <a
         href={SOCIAL_LINKS.instagram}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Instagram"
       >
-        <img
-          src={instagram}
-          alt="Instagram"
-          className="w-[50px] m-[10px] invert"
-        />
+        <InstagramIcon className={iconClass} />
       </a>
     </div>
   );
 }
+

@@ -59,14 +59,18 @@ export function AboutPage() {
               {skills.map((skill) => (
                 <span
                   key={skill.name}
-                  className="font-mono text-xs text-[#a0aec0] bg-[#1a202c] px-3 py-1.5 rounded"
+                  className="font-mono text-xs text-[#a0aec0] bg-[#1a202c] px-3 py-1.5 rounded flex items-center gap-1.5 cursor-default select-none hover:bg-[#1a202c]/80 transition-colors duration-200"
                   title={skill.level}
                 >
-                  {skill.name}
+                  <span>{skill.name}</span>
+                  <span className="text-[#63b3ed] text-[10px] opacity-80">
+                    • {skill.level}
+                  </span>
                 </span>
               ))}
             </div>
           </section>
+
 
           <section className="mb-4">
             <h2 className="font-mono text-[#63b3ed] text-lg sm:text-xl mb-1">
