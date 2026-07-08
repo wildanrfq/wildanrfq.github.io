@@ -2,7 +2,7 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { SocialLinks } from "../components/SocialLinks";
 import { DownloadCvButton } from "../components/DownloadCvButton";
-import { experience, skills } from "../data/experience";
+import { experience, skills, tools } from "../data/experience";
 import { achievements } from "../data/achievements";
 
 export function AboutPage() {
@@ -71,6 +71,19 @@ export function AboutPage() {
             </div>
           </section>
 
+          <section className="mb-10">
+            <h2 className="font-mono text-[#63b3ed] text-xl mb-4">tools</h2>
+            <div className="flex flex-wrap gap-2">
+              {tools.map((tool) => (
+                <span
+                  key={tool.name}
+                  className="font-mono text-xs text-[#a0aec0] bg-[#1a202c] px-3 py-1.5 rounded flex items-center gap-1.5 cursor-default select-none hover:bg-[#1a202c]/80 transition-colors duration-200"
+                >
+                  {tool.name}
+                </span>
+              ))}
+            </div>
+          </section>
 
           <section className="mb-4">
             <h2 className="font-mono text-[#63b3ed] text-lg sm:text-xl mb-1">

@@ -34,3 +34,9 @@ export const skills = [
   { name: "Java", level: "Comfortable" },
   { name: "Swift / SwiftUI", level: "Comfortable" },
 ];
+
+export const tools = [
+  { name: "Xcode" },
+  { name: "MySQL" },
+  { name: "PostgreSQL" },
+];
