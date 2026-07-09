@@ -24,9 +24,9 @@ jobs:
             url: ${{ steps.deployment.outputs.page_url }}
 
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@v6
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v6
               with:
                   node-version: 22
 
@@ -59,6 +59,13 @@ jobs:
             - name: Build site
               if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
               run: npm run build
+              env:
+                  VITE_LASTFM_API_KEY: ${{ secrets.VITE_LASTFM_API_KEY }}
+                  VITE_LASTFM_USER: ${{ secrets.VITE_LASTFM_USER}}
+                  VITE_UMAMI_WEBSITE_ID: ${{ secrets.VITE_UMAMI_WEBSITE_ID }}
+                  VITE_UMAMI_SCRIPT_URL: ${{ secrets.VITE_UMAMI_SCRIPT_URL}}
+                  VITE_CONTACT_FORM_ENDPOINT: ${{ secrets.VITE_CONTACT_FORM_ENDPOINT }}
+
 
             - name: Setup Pages
               if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
@@ -66,7 +73,7 @@ jobs:
 
             - name: Upload artifact
               if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
-              uses: actions/upload-pages-artifact@v3
+              uses: actions/upload-pages-artifact@v4
               with:
                   path: ./dist
 
