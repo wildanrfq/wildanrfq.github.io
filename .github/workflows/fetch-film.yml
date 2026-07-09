@@ -34,13 +34,16 @@ jobs:
               run: npm ci
 
             - name: Install Playwright browsers
+              if: github.event_name != 'push'
               run: npx playwright install chromium --with-deps
 
             - name: Run fetch script
+              if: github.event_name != 'push'
               run: npm run fetch-film
 
             - name: Commit and push if changed
               id: film_change
+              if: github.event_name != 'push'
               run: |
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
