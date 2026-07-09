@@ -1,6 +1,8 @@
 name: Fetch Last Film
 
 on:
+    push:
+        branches: [main]
     schedule:
         - cron: "0 0 * * *"
     workflow_dispatch:
@@ -52,20 +54,20 @@ jobs:
                   fi
 
             - name: Build site
-              if: steps.film_change.outputs.changed == 'true'
+              if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
               run: npm run build
 
             - name: Setup Pages
-              if: steps.film_change.outputs.changed == 'true'
+              if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
               uses: actions/configure-pages@v5
 
             - name: Upload artifact
-              if: steps.film_change.outputs.changed == 'true'
+              if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
               uses: actions/upload-pages-artifact@v3
               with:
                   path: ./dist
 
             - name: Deploy to GitHub Pages
-              if: steps.film_change.outputs.changed == 'true'
+              if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
               id: deployment
               uses: actions/deploy-pages@v4
