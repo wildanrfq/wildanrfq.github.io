@@ -17,13 +17,16 @@ concurrency:
 jobs:
     fetch:
         runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
 
         steps:
             - uses: actions/checkout@v5
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 22
 
             - name: Install dependencies
               run: npm ci
@@ -35,24 +38,34 @@ jobs:
               run: npm run fetch-film
 
             - name: Commit and push if changed
+              id: film_change
               run: |
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
                   git add public/last-film.json
-                  git diff --staged --quiet || git commit -m "chore: update last-film.json"
-                  git push
+                  if git diff --staged --quiet; then
+                    echo "changed=false" >> "$GITHUB_OUTPUT"
+                  else
+                    git commit -m "chore: update last-film.json"
+                    git push
+                    echo "changed=true" >> "$GITHUB_OUTPUT"
+                  fi
 
             - name: Build site
+              if: steps.film_change.outputs.changed == 'true'
               run: npm run build
 
             - name: Setup Pages
+              if: steps.film_change.outputs.changed == 'true'
               uses: actions/configure-pages@v5
 
             - name: Upload artifact
+              if: steps.film_change.outputs.changed == 'true'
               uses: actions/upload-pages-artifact@v3
               with:
                   path: ./dist
 
             - name: Deploy to GitHub Pages
+              if: steps.film_change.outputs.changed == 'true'
               id: deployment
               uses: actions/deploy-pages@v4
