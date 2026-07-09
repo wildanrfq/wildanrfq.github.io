@@ -2,6 +2,7 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { SocialLinks } from "../components/SocialLinks";
+import { GitHubIcon } from "../components/icons";
 import { getProjectBySlug } from "../data/projects";
 
 export function ProjectDetailPage() {
@@ -16,8 +17,8 @@ export function ProjectDetailPage() {
     <div className="bg-[#22303c] min-h-screen text-white relative flex flex-col">
       <Navbar />
 
-      <div className="pt-24 pb-2 px-5 flex flex-col items-center flex-grow">
-        <div className="w-full max-w-2xl">
+      <div className="pt-28 sm:pt-24 pb-2 px-4 sm:px-5 flex flex-col items-center flex-grow">
+        <div className="w-full max-w-2xl flex flex-col flex-grow">
           <Link
             to="/projects"
             className="font-mono text-sm text-[#a0aec0] hover:text-[#63b3ed] no-underline"
@@ -69,12 +70,13 @@ export function ProjectDetailPage() {
             href={project.repo}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-sm text-white bg-[#4a5568] hover:bg-[#2d3748] px-4 py-2 rounded transition-colors duration-300 no-underline inline-block"
+            className="font-mono text-sm text-white bg-[#4a5568] hover:bg-[#2d3748] px-4 py-2 rounded transition-colors duration-300 no-underline inline-flex items-center gap-2 self-start"
           >
+            <GitHubIcon className="w-4 h-4" />
             View on GitHub
           </a>
 
-          <div className="mt-8 flex justify-center">
+          <div className="mt-auto pt-8 flex justify-center">
             <SocialLinks />
           </div>
         </div>
