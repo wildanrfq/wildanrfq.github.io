@@ -25,15 +25,18 @@ export function useNowPlaying() {
         setIsPlaying(nowPlaying);
         setTrack({
           name: latest.name,
-          artist: latest.artist["#text"],
-          album: latest.album["#text"],
+          artist:
+            typeof latest.artist === "string"
+              ? latest.artist
+              : latest.artist?.["#text"] || "",
+          album: latest.album?.["#text"] || "",
           url: latest.url,
           image:
             latest.image?.find((img) => img.size === "large")?.["#text"] ||
             null,
         });
-      } catch {
-        // keep showing last known state on failure
+      } catch (err) {
+        console.error("now playing fetch failed:", err);
       } finally {
         setLoading(false);
       }

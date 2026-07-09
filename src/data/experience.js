@@ -36,7 +36,11 @@ export const skills = [
 ];
 
 export const tools = [
-  { name: "Xcode" },
   { name: "MySQL" },
   { name: "PostgreSQL" },
+  { name: "SQLite" },
+  { name: "Git" },
+  { name: "GitHub Actions" },
+  { name: "Cisco Packet Tracer" },
+  { name: "Streamlit" },
 ];
