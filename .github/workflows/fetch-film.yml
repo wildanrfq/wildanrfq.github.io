@@ -1,83 +1,77 @@
 name: Fetch Last Film
 
 on:
-    push:
-        branches: [main]
-    schedule:
-        - cron: "0 0 * * *"
-    workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
 
 permissions:
-    contents: write
-    pages: write
-    id-token: write
+  contents: write
+  pages: write
+  id-token: write
 
 concurrency:
-    group: pages
-    cancel-in-progress: false
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-    fetch:
-        runs-on: ubuntu-latest
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
+  fetch:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-        steps:
-            - uses: actions/checkout@v6
+    steps:
+      - uses: actions/checkout@v6
 
-            - uses: actions/setup-node@v6
-              with:
-                  node-version: 22
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
 
-            - name: Install dependencies
-              run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-            - name: Install Playwright browsers
-              if: github.event_name != 'push'
-              run: npx playwright install chromium --with-deps
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
 
-            - name: Run fetch script
-              if: github.event_name != 'push'
-              run: npm run fetch-film
+      - name: Run fetch script
+        run: npm run fetch-film
 
-            - name: Commit and push if changed
-              id: film_change
-              if: github.event_name != 'push'
-              run: |
-                  git config user.name "github-actions[bot]"
-                  git config user.email "github-actions[bot]@users.noreply.github.com"
-                  git add public/last-film.json
-                  if git diff --staged --quiet; then
-                    echo "changed=false" >> "$GITHUB_OUTPUT"
-                  else
-                    git commit -m "chore: update last-film.json"
-                    git push
-                    echo "changed=true" >> "$GITHUB_OUTPUT"
-                  fi
+      - name: Commit and push if changed
+        id: film_change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/last-film.json
+          if git diff --staged --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore: update last-film.json"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
 
-            - name: Build site
-              if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
-              run: npm run build
-              env:
-                  VITE_LASTFM_API_KEY: ${{ secrets.VITE_LASTFM_API_KEY }}
-                  VITE_LASTFM_USER: ${{ secrets.VITE_LASTFM_USER}}
-                  VITE_UMAMI_WEBSITE_ID: ${{ secrets.VITE_UMAMI_WEBSITE_ID }}
-                  VITE_UMAMI_SCRIPT_URL: ${{ secrets.VITE_UMAMI_SCRIPT_URL}}
-                  VITE_CONTACT_FORM_ENDPOINT: ${{ secrets.VITE_CONTACT_FORM_ENDPOINT }}
+      - name: Build site
+        if: steps.film_change.outputs.changed == 'true'
+        run: npm run build
+        env:
+          VITE_LASTFM_API_KEY: ${{ secrets.VITE_LASTFM_API_KEY }}
+          VITE_LASTFM_USER: ${{ secrets.VITE_LASTFM_USER}}
+          VITE_UMAMI_WEBSITE_ID: ${{ secrets.VITE_UMAMI_WEBSITE_ID }}
+          VITE_UMAMI_SCRIPT_URL: ${{ secrets.VITE_UMAMI_SCRIPT_URL}}
+          VITE_CONTACT_FORM_ENDPOINT: ${{ secrets.VITE_CONTACT_FORM_ENDPOINT }}
 
+      - name: Setup Pages
+        if: steps.film_change.outputs.changed == 'true'
+        uses: actions/configure-pages@v5
 
-            - name: Setup Pages
-              if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
-              uses: actions/configure-pages@v5
+      - name: Upload artifact
+        if: steps.film_change.outputs.changed == 'true'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./dist
 
-            - name: Upload artifact
-              if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
-              uses: actions/upload-pages-artifact@v4
-              with:
-                  path: ./dist
-
-            - name: Deploy to GitHub Pages
-              if: steps.film_change.outputs.changed == 'true' || github.event_name == 'push'
-              id: deployment
-              uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        if: steps.film_change.outputs.changed == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
