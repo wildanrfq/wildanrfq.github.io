@@ -7,7 +7,7 @@ import { projects } from "../data/projects";
 export function ProjectsPage() {
   return (
     <div className="bg-[#22303c] min-h-screen text-white relative flex flex-col">
-      <Navbar />
+      <Navbar sticky />
 
       <div className="pt-28 sm:pt-24 pb-2 px-4 sm:px-5 flex flex-col items-center flex-grow">
         <h1 className="font-mono text-3xl sm:text-4xl mb-10 text-white">projects</h1>

@@ -8,7 +8,7 @@ import { achievements } from "../data/achievements";
 export function AboutPage() {
   return (
     <div className="bg-[#22303c] min-h-screen text-white relative flex flex-col">
-      <Navbar />
+      <Navbar sticky />
 
       <div className="pt-28 sm:pt-24 pb-2 px-4 sm:px-5 flex flex-col items-center flex-grow">
         <div className="w-full max-w-2xl">
