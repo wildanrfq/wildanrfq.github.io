@@ -1,10 +1,9 @@
-import { chromium } from "playwright";
 import { writeFileSync, readFileSync, existsSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const PROFILE_URL = "https://letterboxd.com/wildanrfq";
+const RSS_URL = "https://letterboxd.com/wildanrfq/rss/";
 const OUT_PATH = resolve(__dirname, "../public/last-film.json");
 
 function readExisting() {
@@ -18,114 +17,76 @@ function readExisting() {
 
 function sameFilm(a, b) {
   if (!a || !b) return false;
-  return (
-    a.title === b.title &&
-    a.poster === b.poster &&
-    a.rating === b.rating &&
-    a.url === b.url
-  );
+  return a.url === b.url && a.rating === b.rating;
 }
 
-async function scrapeOnce(browser) {
-  const context = await browser.newContext({
-    userAgent:
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    viewport: { width: 1280, height: 1600 },
-    locale: "en-US",
-    extraHTTPHeaders: {
-      "Accept-Language": "en-US,en;q=0.9",
-    },
-  });
+function extractTag(block, tag) {
+  const match = block.match(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`));
+  return match ? match[1].trim() : null;
+}
 
-  await context.addInitScript(() => {
-    Object.defineProperty(navigator, "webdriver", { get: () => undefined });
-  });
+function stripCdata(str) {
+  if (!str) return str;
+  const match = str.match(/<!\[CDATA\[([\s\S]*?)\]\]>/);
+  return match ? match[1] : str;
+}
 
-  const page = await context.newPage();
-
-  await page.goto(PROFILE_URL, {
-    waitUntil: "domcontentloaded",
-    timeout: 45000,
-  });
-
-  const posterLocator = page
-    .locator("#recent-activity .film-poster, section.js-poster-list .film-poster")
-    .first();
-
-  await posterLocator.waitFor({ timeout: 20000 });
-  await posterLocator.scrollIntoViewIfNeeded();
-
-  await page
-    .waitForFunction(() => {
-      const img = document.querySelector(
-        "#recent-activity .film-poster img, section.js-poster-list .film-poster img"
-      );
-      return img && img.src && !img.src.includes("empty-poster");
-    }, { timeout: 20000 })
-    .catch(() => {});
-
-  const film = await page.evaluate(() => {
-    const firstItem =
-      document.querySelector("#recent-activity .film-poster") ||
-      document.querySelector("section.js-poster-list .film-poster");
-
-    if (!firstItem) return null;
-
-    const rawTitle =
-      firstItem.getAttribute("data-film-name") ||
-      firstItem.querySelector("img")?.getAttribute("alt");
-    const title = rawTitle?.startsWith("Poster for ")
-      ? rawTitle.replace("Poster for ", "")
-      : rawTitle;
-
-    const imgEl = firstItem.querySelector("img");
-    let poster = imgEl?.getAttribute("src") || null;
-    if (poster && poster.includes("empty-poster")) poster = null;
-
-    const container = firstItem.closest("li");
-    const ratingEl = container?.querySelector("[class*='rated-']");
-    const match = ratingEl?.className?.match(/rated-(\d+)/);
-    const rating = match ? Number(match[1]) / 2 : null;
-
-    const linkEl = firstItem.closest("a") || firstItem.querySelector("a");
-    const slug = linkEl?.getAttribute("href") || firstItem.getAttribute("data-film-slug");
-    const url = slug ? `https://letterboxd.com${slug.startsWith("/") ? slug : "/" + slug}` : null;
-
-    return { title, poster, rating, url, fetchedAt: new Date().toISOString() };
-  });
-
-  await context.close();
-  return film;
+function decodeEntities(str) {
+  if (!str) return str;
+  return str
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"');
 }
 
 async function fetchLastFilm() {
-  const browser = await chromium.launch({
-    headless: true,
-    args: [
-      "--disable-blink-features=AutomationControlled",
-      "--disable-dev-shm-usage",
-    ],
+  const res = await fetch(RSS_URL, {
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; portfolio-bot/1.0)" },
   });
 
-  let film = null;
-  let lastError = null;
-
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    try {
-      film = await scrapeOnce(browser);
-      if (film) break;
-    } catch (err) {
-      lastError = err;
-      console.log(`attempt ${attempt} failed: ${err.message}`);
-      await new Promise((r) => setTimeout(r, 3000 * attempt));
-    }
+  if (!res.ok) {
+    throw new Error(`RSS fetch failed with status ${res.status}`);
   }
 
-  await browser.close();
+  const xml = await res.text();
+  const firstItem = xml.match(/<item>([\s\S]*?)<\/item>/);
 
-  if (!film) {
-    console.log("all attempts failed, keeping previous last-film.json untouched");
-    if (lastError) console.log(lastError.message);
+  if (!firstItem) {
+    throw new Error("no item found in RSS feed");
+  }
+
+  const block = firstItem[1];
+
+  const link = stripCdata(extractTag(block, "link"));
+  const filmTitle = decodeEntities(
+    stripCdata(extractTag(block, "letterboxd:filmTitle"))
+  );
+  const ratingRaw = extractTag(block, "letterboxd:memberRating");
+  const rating = ratingRaw ? Number(ratingRaw) : null;
+
+  const description = stripCdata(extractTag(block, "description"));
+  const posterMatch = description?.match(/<img src="([^"]+)"/);
+  const poster = posterMatch ? posterMatch[1] : null;
+
+  return {
+    title: filmTitle,
+    poster,
+    rating,
+    url: link,
+    fetchedAt: new Date().toISOString(),
+  };
+}
+
+async function run() {
+  let film = null;
+
+  try {
+    film = await fetchLastFilm();
+  } catch (err) {
+    console.log("fetch failed:", err.message);
+    console.log("keeping previous last-film.json untouched");
     return;
   }
 
@@ -139,4 +100,4 @@ async function fetchLastFilm() {
   console.log("written:", film);
 }
 
-fetchLastFilm();
+run();
