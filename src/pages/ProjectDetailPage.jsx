@@ -2,7 +2,7 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { SocialLinks } from "../components/SocialLinks";
-import { GitHubIcon } from "../components/icons";
+import { GitHubIcon, ExternalLinkIcon } from "../components/icons";
 import { getProjectBySlug } from "../data/projects";
 
 export function ProjectDetailPage() {
@@ -66,15 +66,30 @@ export function ProjectDetailPage() {
             </section>
           )}
 
-          <a
-            href={project.repo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono text-sm text-white bg-[#4a5568] hover:bg-[#2d3748] px-4 py-2 rounded transition-colors duration-300 no-underline inline-flex items-center gap-2 self-start"
-          >
-            <GitHubIcon className="w-4 h-4" />
-            View on GitHub
-          </a>
+          <div className="flex flex-wrap items-center gap-3 self-start">
+            {project.url && (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-sm text-white bg-[#3182ce] hover:bg-[#2b6cb0] px-4 py-2 rounded transition-colors duration-300 no-underline inline-flex items-center gap-2"
+              >
+                <ExternalLinkIcon className="w-4 h-4" />
+                Visit Website
+              </a>
+            )}
+            {project.repo && (
+              <a
+                href={project.repo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-sm text-white bg-[#4a5568] hover:bg-[#2d3748] px-4 py-2 rounded transition-colors duration-300 no-underline inline-flex items-center gap-2"
+              >
+                <GitHubIcon className="w-4 h-4" />
+                View on GitHub
+              </a>
+            )}
+          </div>
 
           <div className="mt-auto pt-8 flex justify-center">
             <SocialLinks />

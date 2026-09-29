@@ -1,6 +1,24 @@
 export const projects = [
   {
     id: 1,
+    slug: "khffest",
+    name: "khffest.id",
+    description:
+      "The official website for Kotabaru Heritage Film Festival (KHFF) 2026. A modern web platform delivering festival screening schedules, film program catalogs, visitor ticket registration, and festival team directory.",
+    url: "https://khffest.id",
+    repo: "https://github.com/wildanrfq/khff-pre-release",
+    lang: "Next.js",
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    features: [
+      "Official festival program and screening schedule",
+      "Competition and non-competition film catalog",
+      "Visitor ticket registration system",
+      "Festival team and archive showcase",
+      "Responsive design with custom festival branding",
+    ],
+  },
+  {
+    id: 2,
     slug: "wildanrfq-github-io",
     name: "wildanrfq.github.io",
     description:
@@ -16,7 +34,7 @@ export const projects = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     slug: "spader",
     name: "spader",
     description:
@@ -33,7 +51,7 @@ export const projects = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     slug: "filmbro",
     name: "filmbro",
     description:
@@ -48,7 +66,7 @@ export const projects = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     slug: "spada-reminder",
     name: "spada-reminder",
     description:
@@ -64,7 +82,7 @@ export const projects = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     slug: "jogja-historia",
     name: "jogja-historia",
     description:

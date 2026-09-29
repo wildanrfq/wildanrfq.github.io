@@ -1,5 +1,13 @@
 export const experience = [
   {
+    id: "khff",
+    role: "Web Development Team Lead",
+    org: "Kotabaru Heritage Film Festival (KHFF)",
+    period: "2026",
+    description:
+      "Led the web development team in designing and building the official festival website (khffest.id) for Kotabaru Heritage Film Festival 2026. Managed end-to-end technical delivery across developers and designers, implementing features including festival screening schedules, film catalog, and visitor ticket registration.",
+  },
+  {
     id: "lab-assistant",
     role: "Laboratory Assistant",
     org: 'UPN "Veteran" Yogyakarta',
