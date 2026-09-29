@@ -2,6 +2,7 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { SocialLinks } from "../components/SocialLinks";
 import { DownloadCvButton } from "../components/DownloadCvButton";
+import { DownloadPortfolioButton } from "../components/DownloadPortfolioButton";
 import { experience, skills, tools } from "../data/experience";
 import { achievements } from "../data/achievements";
 
@@ -14,7 +15,10 @@ export function AboutPage() {
         <div className="w-full max-w-2xl">
           <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
             <h1 className="font-mono text-3xl sm:text-4xl m-0">about</h1>
-            <DownloadCvButton />
+            <div className="flex items-center gap-3 flex-wrap">
+              <DownloadCvButton />
+              <DownloadPortfolioButton />
+            </div>
           </div>
 
           <p className="text-[#a0aec0] leading-relaxed mb-10">

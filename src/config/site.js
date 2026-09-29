@@ -23,3 +23,4 @@ export const LASTFM_CONFIG = {
 };
 
 export const CV_DOWNLOAD_LINK = "https://drive.google.com/uc?export=download&id=1M6JihHtdZOqSfSwVdEU4OQsNaQkyAn_C";
+export const PORTFOLIO_PDF_LINK = "https://bit.ly/PortfolioPDFWildanRifqi";
